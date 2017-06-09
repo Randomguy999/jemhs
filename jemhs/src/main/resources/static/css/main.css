@@ -1,0 +1,16 @@
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+
+h1{
+	color:#0000FF;
+}
+
+h2{
+	color:#FF0000;
+}
+h3{
+	color:blue;
+}
+
