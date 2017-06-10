@@ -31,8 +31,7 @@
 	<h4 align="center">${message}</h4>
 
 	<div class="container">
-		<form:form class="form-horizontal"
-			action="RegistrationProcess"
+		<form:form class="form-horizontal" action="RegistrationProcess"
 			modelAttribute="studentRegistration">
 
 			<spring:bind path="firstName">
@@ -84,63 +83,25 @@
 			</spring:bind>
 
 
-
-			<%-- Month:
-		
-		<form:select path="month">
-
-				<form:options items="${studentRegistration.month}" />
-
-			</form:select> --%>
-
-           <spring:bind path="day">
-				<div class="form-group ">
-					<label class="col-sm-2 control-label">Day</label>
-					<div class="col-sm-2">
-						<form:select path="day" class="form-control">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${studentRegistration.dayList}" />
-						</form:select>
-						<form:errors path="day" class="control-label" />
+			<spring:bind path="dob">
+				<div class="form-group required ">
+					<label class="col-sm-2 control-label">DOB </label>
+					<div class="col-md-4">
+						<form:input path="dob" type="text" class="form-control " id="dob"
+							placeholder="DD/MM/YYYY" required="required" />
+						<form:errors path="dob" class="control-label" />
 					</div>
-					<div class="col-sm-2"></div>
-				</div>
-			</spring:bind>
-			
-			<spring:bind path="month">
-				<div class="form-group ">
-					<label class="col-sm-2 control-label">Month</label>
-					<div class="col-sm-2">
-						<form:select path="month" class="form-control">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${studentRegistration.monthList}" />
-						</form:select>
-						<form:errors path="month" class="control-label" />
-					</div>
-					<div class="col-sm-2"></div>
 				</div>
 			</spring:bind>
 
-			<spring:bind path="year">
-				<div class="form-group ">
-					<label class="col-sm-2 control-label">Year</label>
-					<div class="col-sm-2">
-						<form:select path="year" class="form-control">
-							<form:option value="NONE" label="--- Select ---" />
-							<form:options items="${studentRegistration.yearList}" />
-						</form:select>
-						<form:errors path="year" class="control-label" />
-					</div>
-					<div class="col-sm-2"></div>
-				</div>
-			</spring:bind>
-			
+
 			<spring:bind path="standard">
 				<div class="form-group required">
 					<label class="col-sm-2 control-label">Standard </label>
 					<div class="col-sm-2">
 						<form:select path="standard" class="form-control">
-							<form:option value="NONE" label="--- Select ---" reuired="required" />
+							<form:option value="NONE" label="--- Select ---"
+								reuired="required" />
 							<form:options items="${studentRegistration.standardList}" />
 						</form:select>
 						<form:errors path="standard" class="control-label" />
@@ -155,23 +116,35 @@
 					<label class="col-sm-2 control-label">Phone </label>
 					<div class="col-md-4">
 						<form:input path="phone" type="text" class="form-control "
-							id="phone" placeholder="Enter Valid Phone Number" required="required"/>
+							id="phone" placeholder="Enter Valid Phone Number"
+							required="required" />
 						<form:errors path="phone" class="control-label" />
 					</div>
 				</div>
 			</spring:bind>
 
-           <spring:bind path="guardian">
+			<spring:bind path="email">
+				<div class="form-group required ">
+					<label class="col-sm-2 control-label">Email </label>
+					<div class="col-md-4">
+						<form:input path="email" type="text" class="form-control "
+							id="email" placeholder="Enter Valid Email ID" required="required" />
+						<form:errors path="email" class="control-label" />
+					</div>
+				</div>
+			</spring:bind>
+
+			<spring:bind path="guardian">
 				<div class="form-group ">
 					<label class="col-sm-2 control-label">Guardian </label>
 					<div class="col-md-4">
 						<form:input path="guardian" type="text" class="form-control "
-							id="lastName" placeholder="Enter Guardian Name"/>
+							id="lastName" placeholder="Enter Guardian Name" />
 						<form:errors path="guardian" class="control-label" />
 					</div>
 				</div>
 			</spring:bind>
-			
+
 			<spring:bind path="relation">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Relation</label>

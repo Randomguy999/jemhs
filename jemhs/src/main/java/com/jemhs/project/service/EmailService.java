@@ -1,5 +1,6 @@
 package com.jemhs.project.service;
 
-public interface EmailService {
-
+public abstract interface EmailService
+{
+  public  void sendSimpleMessage(String toUser, String subject, String body);
 }
