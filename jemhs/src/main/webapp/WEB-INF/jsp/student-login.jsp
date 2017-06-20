@@ -34,7 +34,7 @@ h4{
 	<h4 align="center">${message}</h4>
 
 	<div class="container">
-		<form:form class="form-horizontal" action="studentloginProcess"
+		<form:form class="form-horizontal" action="success"
 			modelAttribute="studentCred">
 
 			<spring:bind path="userName">

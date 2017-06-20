@@ -2,12 +2,16 @@ package com.jemhs.project.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Pattern;
 
@@ -15,20 +19,21 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Student implements Serializable {
+public class UserRegistration implements Serializable {
 
 	private static final long serialVersionUID = -7228032663415896747L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int userId;
 	@Pattern(regexp = "^[A-Za-z ]{0,20}", message = "Enter only alphabets")
 	private String firstName;
 	@Pattern(regexp = "^[A-Za-z ]{0,20}", message = "Enter only alphabets")
 	private String lastName;
 	private String middleName;
 	private String gender;
-	@javax.validation.constraints.Pattern(regexp = "^[0-9 /]+", message = "Enter valid date of birth")
+	// @javax.validation.constraints.Pattern(regexp = "^[0-9 /]+", message =
+	// "Enter valid date of birth")
 	private String dob;
 
 	@javax.validation.constraints.Pattern(regexp = "^[0-9]{10}", message = "Enter 10 digit phone number")
@@ -40,10 +45,14 @@ public class Student implements Serializable {
 	private String standard;
 	private String guardian;
 	private String relation;
+	private int active;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 	@Transient
 	private ArrayList<String> standardList;
 
-	public Student() {
+	public UserRegistration() {
 
 		standardList = new ArrayList<String>();
 
@@ -58,13 +67,13 @@ public class Student implements Serializable {
 		standardList.add("IX");
 		standardList.add("X");
 	}
-	
-	public int getId() {
-		return id;
+
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getFirstName() {
@@ -145,6 +154,22 @@ public class Student implements Serializable {
 
 	public void setStandardList(ArrayList<String> standardList) {
 		this.standardList = standardList;
+	}
+	
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 }

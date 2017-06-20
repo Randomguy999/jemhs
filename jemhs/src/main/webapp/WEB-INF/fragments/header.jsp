@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <head>
-<title>Login Page</title>
 
 <spring:url value="/resources/core/css/hello.css" var="coreCss" />
 <spring:url value="/resources/core/css/bootstrap.min.css"
@@ -17,6 +17,7 @@
 	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="${urlHome}">JEMHS</a>
+			<a href="<c:url value="/logout"/>"> Logout</a>
 		</div>
 		<div id="navbar">
 			<ul class="nav navbar-nav navbar-right">

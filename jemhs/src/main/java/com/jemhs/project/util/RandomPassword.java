@@ -9,7 +9,7 @@ public class RandomPassword {
 	public static String generatePassword() {
 
 		char[] possibleCharacters = (new String(
-				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"))
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&*()"))
 						.toCharArray();
 		String randomStr = RandomStringUtils.random(10, 0, possibleCharacters.length - 1, false, false,
 				possibleCharacters, new SecureRandom());
