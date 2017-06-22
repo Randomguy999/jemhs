@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -22,7 +24,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	private DataSource dataSource;
 	
 	@Autowired
-	private SimpleAuthenticationSuccessHandler successHandler;
+	SimpleAuthenticationSuccessHandler successHandler;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -47,6 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
+		// authorize requests
 		http.
 			authorizeRequests()
 				.antMatchers("/").permitAll()
@@ -55,11 +58,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("student/**").hasAnyAuthority("STUDENT,ADMIN")
 				.antMatchers("/faculty/**").hasAnyAuthority("FACULTY,ADMIN")
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-				.authenticated().and().csrf().disable().formLogin().successHandler(successHandler)
+				.authenticated().and().csrf().disable();
+		
+		//remember me configuration
+				http.rememberMe(). 
+				tokenRepository(persistentTokenRepository()).
+		                rememberMeParameter("remember-me-param").
+		                rememberMeCookieName("my-remember-me").
+		                tokenValiditySeconds(86400);
+				
+		// login configuration
+				http
+				.formLogin().successHandler(successHandler)
 				.loginPage("/login").failureUrl("/login?error=true")
 				.usernameParameter("userName")
-				.passwordParameter("password")
-				.and().logout()
+				.passwordParameter("password");
+				
+		// logout configuration		
+				http
+				.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and().exceptionHandling()
 				.accessDeniedPage("/accessdenied");
@@ -69,6 +86,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	public BCryptPasswordEncoder passwordEncoder() {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		return bCryptPasswordEncoder;
+	}
+	
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+		tokenRepository.setDataSource(dataSource);
+		return tokenRepository;
 	}
 	
 	@Override
