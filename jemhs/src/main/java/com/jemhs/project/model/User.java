@@ -10,11 +10,12 @@ public class User {
 	@Id
 	private int userId;
 	private String userName;
+	private String email;
 	private String password;
 	@Transient
 	private String newPassword;
 	private int active;
-	
+
 	public int getId() {
 		return userId;
 	}
@@ -26,6 +27,12 @@ public class User {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;
@@ -45,5 +52,4 @@ public class User {
 	public void setActive(int active) {
 		this.active = active;
 	}
-	
 }

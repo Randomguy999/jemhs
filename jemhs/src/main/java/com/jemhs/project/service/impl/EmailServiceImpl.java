@@ -30,9 +30,11 @@ public class EmailServiceImpl implements EmailService {
     //	           helper.addInline("id101", file);
     	           logger.info("Sending email...");
     	           emailSender.send(message);
+    	           logger.info("Successfully Sent Email");
        }
        catch(Exception e){
     	   logger.error("Error while sending email...");
+    	  
        }
     }
     

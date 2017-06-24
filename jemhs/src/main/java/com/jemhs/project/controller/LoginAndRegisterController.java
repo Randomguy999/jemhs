@@ -12,12 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jemhs.project.model.User;
+import com.jemhs.project.model.UserDetails;
 import com.jemhs.project.model.UserRegistration;
 import com.jemhs.project.service.UserService;
+import com.jemhs.project.util.Constants;
 
 @Controller
 public class LoginAndRegisterController {
@@ -33,7 +36,7 @@ public class LoginAndRegisterController {
 		modelAndView.setViewName("welcome");
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -101,16 +104,64 @@ public class LoginAndRegisterController {
 		return model;
 	}
 
-	@RequestMapping(value = "/accessdenied", method = RequestMethod.GET)
-	public ModelAndView accessDenied() {
-		ModelAndView model = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		// User user = userService.findUserByUserName(auth.getName());
-		// model.addObject("userName", "Welcome " + user.getUserName());
-		// model.addObject("adminMessage","Content Available Only for Users with
-		// Admin Role");
-		model.setViewName("accessdenied");
-		return model;
+	@RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
+	public String forgotPassword() {
+		return "forgotPassword";
+	}
+
+	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+	public ModelAndView processForgotPasswordForm(ModelAndView modelAndView, @RequestParam("email") String email) {
+		UserDetails userDetails=userService.findUserByEmail(email);
+		if(null==userDetails){
+			modelAndView.addObject("message", "Entered email doesn't exist in records");
+			return modelAndView;
+		}
+		boolean generatedToken= userService.generatePassResetToken(userDetails);
+		if(generatedToken){
+		modelAndView.addObject("message", Constants.PASSWORD_EMAIL_LINK);	
+		}
+		modelAndView.setViewName("forgotPassword");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+	public ModelAndView resetPassword(@RequestParam("id") String userId, @RequestParam("token") String token,
+			ModelAndView modelAndView) {
+		String validate = null;
+		validate = userService.validateToken(userId, token);
+		if(validate.equals("Invalid Token")){
+			modelAndView.addObject("message", validate+". Please request a new link to reset password");
+			modelAndView.setViewName("error");
+			return modelAndView;
+		}
+		else if(validate.equals("Token has expired")){
+			modelAndView.addObject("message", validate+". Please request a new link to reset password");
+			modelAndView.setViewName("error");
+			return modelAndView;
+		}
+		modelAndView.setViewName("resetPassword");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+	public ModelAndView processResetPasswordForm(ModelAndView modelAndView, @RequestParam("password") String pass,
+			@RequestParam("confpassword") String confPass) {
+		boolean resetFlag = false;
+		if (!pass.equals(confPass)) {
+			modelAndView.addObject("message", "Both passwords didn't match");
+			return modelAndView;
+		}
+		resetFlag = userService.resetPassword(pass);
+		if (resetFlag) {
+			modelAndView.addObject("message", "Password reset successful");
+			// modelAndView.setViewName("resetPassword");
+			return modelAndView;
+		}else{
+			modelAndView.addObject("message", "Error in resetting password. Please contact admin");
+		}
+		
+		// modelAndView.setViewName("resetPassword");
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/changepass", method = RequestMethod.GET)
@@ -132,5 +183,17 @@ public class LoginAndRegisterController {
 		modelAndView.addObject("message", "Password changed successfully");
 
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "/accessdenied", method = RequestMethod.GET)
+	public ModelAndView accessDenied() {
+		ModelAndView model = new ModelAndView();
+	//	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// User user = userService.findUserByUserName(auth.getName());
+		// model.addObject("userName", "Welcome " + user.getUserName());
+		// model.addObject("adminMessage","Content Available Only for Users with
+		// Admin Role");
+		model.setViewName("accessdenied");
+		return model;
 	}
 }

@@ -8,5 +8,7 @@ import com.jemhs.project.model.UserRegistration;
 
 @Transactional
 public interface UserRegistrationRepository extends JpaRepository<UserRegistration, Long>{
+	
+	
 
 }
