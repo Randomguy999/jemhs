@@ -1,130 +1,449 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
 <head>
-<title>Registration Form</title>
-<link rel="stylesheet" type="text/css"
-	th:href="@{/css/registration.css}" />
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<head>
+<title>Home Page</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}" />
+<link
+	href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+	rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script th:src="@{/js/app.js}"></script>
+<script>
+	$(function() {
+		$("#datepicker-13").datepicker();
+		$("#datepicker-13").datepicker();
+	});
+</script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 </head>
+</head>
+
+<style>
+body {
+	/* margin-top: 50px; */
+	background-color: #bfd9bf;
+	/* background-image: url('/images/background.jpg'); */
+}
+
+.glyphicon {
+	margin-right: 10px;
+}
+
+.panel-body {
+	padding: 0px;
+}
+
+.panel-body table tr td {
+	padding-left: 15px
+}
+
+.panel-body .table {
+	margin-bottom: 0px;
+}
+</style>
+<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">JEMHS</a>
+			</div>
+			<div sec:authorize="hasAuthority('ADMIN')">
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/admin}"> <span
+								class="glyphicon glyphicon-home"></span></a>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+
 <body>
-	<!-- <form th:action="@{/}" method="get">
-		<button class="btn btn-md btn-warning btn-block" type="Submit">Go
-			To Login Page</button>
-	</form> -->
-
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<form autocomplete="off" action="#" th:action="@{/admin/registration}"
-					th:object="${user}" method="post" class="form-horizontal"
-					role="form">
-					<h2>Registration Form</h2>
-					<div class="form-group">
-					
-						<div class="col-sm-9">
-							<label th:if="${#fields.hasErrors('firstName')}"
-								th:errors="*{firstName}" class="validation-message"></label> 
-							   <input type="text" th:field="*{firstName}"
-								placeholder="Enter First Name" class="form-control" />
+			<div class="col-sm-3 col-md-3">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne"><span
+									class="glyphicon glyphicon-folder-close"> </span>Content</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><span class="glyphicon glyphicon-pencil text-primary"></span><a
+											href="#">Articles</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-flash text-success"></span><a
+											href="#">News</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-file text-info"></span><a
+											href="#">Newsletters</a></td>
+									</tr>
+									<tr>
+										<td><span
+											class="glyphicon glyphicon-comment text-success"></span><a
+											href="#">Comments</a> <span class="badge">42</span></td>
+									</tr>
+								</table>
+							</div>
 						</div>
 					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseTwo"><span class="glyphicon glyphicon-th">
+								</span>Modules</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><a href="#">Orders</a> <span
+											class="label label-success">$ 320</span></td>
+									</tr>
+									<tr>
+										<td><a href="#">Invoices</a></td>
+									</tr>
+									<tr>
+										<td><a href="#">Shipments</a></td>
+									</tr>
+									<tr>
+										<td><a href="#">Tex</a></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseFour"><span class="glyphicon glyphicon-file">
+								</span>Reports</a>
+							</h4>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><span class="glyphicon glyphicon-usd"></span><a
+											href="#">Sales</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-tasks"></span><a
+											href="#">Products</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-shopping-cart"></span><a
+											href="#">Shopping Cart</a></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseThree"><span
+									class="glyphicon glyphicon-user"> </span>Account</a>
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><a th:href="@{/changepass}">Change
+												Password</a></td>
+									</tr>
+									<tr>
+										<td><a href="#">Notifications</a> <span
+											class="label label-info">5</span></td>
+									</tr>
+									<tr>
+										<td><a href="#">Import/Export</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-log-out text-danger"></span><a
+											th:href="@{/logout}" class="text-danger"> Logout</a></td>
+									</tr>
+									<!-- <tr>
+										<td><span class="glyphicon glyphicon-trash text-danger"></span><a
+											href="#" class="text-danger"> Delete Account</a></td>
+									</tr> -->
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseFive"><i class="fa fa-users"></i> Manage</a>
+							</h4>
+						</div>
+						<div id="collapseFive" class="panel-collapse collapse">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><span
+											class="glyphicon glyphicon-plus-sign text-success"></span><a
+											href="#" class="text-success">Add User</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-edit text-primary"></span><a
+											href="#" class="text-primary">Modify User</a></td>
+									</tr>
+									<tr>
+										<td><span
+											class="glyphicon glyphicon-ban-circle text-warning"></span><a
+											href="#" class="text-warning">Disable User</a></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-trash text-danger"></span><a
+											href="#" class="text-danger">Delete User</a></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9 col-md-9">
+				<div class="well well-sm">
+					<div sec:authorize="hasAuthority('STUDENT')">
+						<h1 align="center">Student Dashboard</h1>
+					</div>
+					<div sec:authorize="hasAuthority('FACULTY')">
+						<h1 align="center">Faculty Dashboard</h1>
+					</div>
+					<div sec:authorize="hasAuthority('ADMIN')">
+						<h4 align="center">Registration Form</h4>
+					</div>
+				</div>
+				<div class="col-sm-9 col-md-9">
+					<form autocomplete="off" action="#"
+						th:action="@{/admin/registration}" th:object="${user}"
+						method="post" class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="FirstName" class="col-md-3 control-label">First
+								Name</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-user"></i></span> <input type="text"
+										class="form-control" name="firstName" required="required"
+										placeholder="First Name" pattern="^[A-Za-z ]{0,20}" title="Enter a valid name">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="MiddleName" class="col-md-3 control-label">Middle
+								Name</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-user"></i></span> <input type="text"
+										class="form-control" name="middleName" placeholder="Middle Name"
+										pattern="^[A-Za-z ]{0,20}" title="Enter a valid name">
+								</div>
+							</div>
+						</div>
 
 
-					<div class="form-group">
-						<div class="col-sm-9">
-							<label th:if="${#fields.hasErrors('middleName')}"
-								th:errors="*{lastName}" class="validation-message"></label> <input
-								type="text" th:field="*{middleName}"
-								placeholder="Enter Middle Name" class="form-control" />
+						<div class="form-group">
+							<label for="LastName" class="col-md-3 control-label">Last
+								Name</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-user"></i></span> <input type="text"
+										class="form-control" name="lastName" required="required"
+										placeholder="Last Name" pattern="^[A-Za-z ]{0,20}" title="Enter a valid name">
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-9">
-							<label th:if="${#fields.hasErrors('lastName')}"
-								th:errors="*{lastName}" class="validation-message"></label> <input
-								type="text" th:field="*{lastName}" placeholder="Enter Last Name"
-								class="form-control" />
-						</div>
-					</div>
-					
-					<div>
-					<input type="radio" th:name="${'user[' + item + ']'}" value="a" />Male
-					<input type="radio" th:name="${'user[' + item + ']'}" value="b" />Female
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="date" th:field="*{dob}"
-								placeholder="MM/DD/YYYY" class="form-control" /> <label
-								th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"
-								class="validation-message"></label>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="tel" th:field="*{phone}"
-								placeholder="Enter Valid Phone Number" class="form-control" /> <label
-								th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
-								class="validation-message"></label>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="email" th:field="*{email}"
-								placeholder="Enter valid Email" class="form-control" /> <label
-								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-								class="validation-message"></label>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="text" th:field="*{guardian}"
-								placeholder="Enter Guardian Name" class="form-control" /> <label
-								th:if="${#fields.hasErrors('guardian')}" th:errors="*{guardian}"
-								class="validation-message"></label>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="text" th:field="*{relation}"
-								placeholder="Enter Relation" class="form-control" /> <label
-								th:if="${#fields.hasErrors('relation')}" th:errors="*{relation}"
-								class="validation-message"></label>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<div class="col-sm-9">
-							<input type="text" th:field="*{address}"
-								placeholder="Enter Address" class="form-control" /> <label
-								th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
-								class="validation-message"></label>
-						</div>
-					</div>
 
-					<div class="form-group">
-						<div class="col-sm-9">
-							<button type="submit" class="btn btn-primary btn-block">Register
-								User</button>
+						<div class="form-group">
+							<label class="col-md-3 control-label">Gender</label>
+							<div class="col-md-9">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default"> <input type="radio"
+										name="gender" value="male" /> Male
+									</label> <label class="btn btn-default"> <input type="radio"
+										name="gender" value="female" required="required" /> Female
+									</label>
+								</div>
+							</div>
 						</div>
-					</div>
 
-					<span th:utext="${successMessage}"></span>
+						<div class="form-group">
+							<label for="dob" class="col-md-3 control-label">DOB</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-calendar"></i></span> <input type="text"
+										id="datepicker-13" class="form-control" name="dob"
+										required="required" placeholder="MM/DD/YYYY">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="dob" class="col-md-3 control-label">Standard</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<select class="form-control" id="standard" required="required" name="standard">
+									    <option value="" >----Select Standard----</option>
+										<option>I</option>
+										<option>II</option>
+										<option>III</option>
+										<option>IV</option>
+										<option>V</option>
+										<option>VI</option>
+										<option>VII</option>
+										<option>VIII</option>
+										<option>IX</option>
+										<option>X</option>
+									</select>
+								</div>
+							</div>
+						</div>
 
 
-				</form>
+						<div class="form-group">
+							<label for="phone" class="col-md-3 control-label">Phone</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-phone"></i></span> <input type="tel"
+										class="form-control bfh-phone" name="phone" title="Enter a valid 10 digit Phone Number"
+										required="required" pattern="^[0-9]{10}"
+										placeholder="Phone Number">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="col-md-3 control-label">Email</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-envelope"></i></span> <input type="email"
+										class="form-control" name="email" required="required" placeholder="Email Address">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="guardian" class="col-md-3 control-label">Guardian</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-user"></i></span> <input type="text"
+										class="form-control" name="guardian" required="required"
+										placeholder="Guardian" pattern="^[A-Za-z ]{0,20}" title="Enter a valid name">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="relation" class="col-md-3 control-label">Relation</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-envelope"></i></span> <input type="text"
+										class="form-control" name="relation" required="required"
+										placeholder="Relation" pattern="^[A-Za-z ]{0,20}" title="Enter a valid name">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="address" class="col-md-3 control-label">Address</label>
+							<div class="col-md-9">
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="glyphicon glyphicon-home"></i></span>
+									<textarea class="form-control" name="address"
+										placeholder="Address"></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-9 col-md-offset-3">
+								<button type="submit" class="btn btn-primary btn-block">Register
+									User</button>
+							</div>
+						</div>
+
+						<div th:if="${successMessage}"
+									class="alert alert-success alert-dismissible form-feedback"
+									role="alert">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<div th:text=${successMessage}></div>
+								</div>
+								<div th:if="${errorMessage}"
+									class="alert alert-danger alert-dismissible form-feedback"
+									role="alert">
+									<button type="button" class="close" data-dismiss="alert"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<div th:text=${errorMessage}></div>
+								</div>
+
+
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
 
+	<div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <div class="navbar-text pull-left">© 2017 - Site Built By Mr. Kadiyala.
+          <!--  <a href="http://tinyurl.com/tbvalid" target="_blank" >HTML 5 Validation</a> -->
+      </div>
+      <div class="navbar-text pull-right"><ul class="social-network social-circle">
+                        <li><a href="#" class="icoFacebook icon" title="Facebook"><i class="fa fa-facebook" ></i></a></li>
+                        <li><a href="#" class="icoTwitter icon" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#" class="icoGoogle icon" title="Google +"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#" class="icoLinkedin icon" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>	
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+

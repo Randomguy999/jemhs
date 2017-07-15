@@ -23,6 +23,7 @@ import com.jemhs.project.repository.UserDetailsRepository;
 import com.jemhs.project.repository.UserRegistrationRepository;
 import com.jemhs.project.repository.UserRepository;
 import com.jemhs.project.service.EmailService;
+import com.jemhs.project.service.S3Service;
 import com.jemhs.project.service.UserService;
 import com.jemhs.project.util.Constants;
 import com.jemhs.project.util.RandomPassword;
@@ -51,11 +52,11 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	EmailService emailService;
-
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	Calendar cal = Calendar.getInstance();
+	Calendar cal =null;
 	String usr = null;
 	String toUser = null;
 	String body = null;
@@ -139,10 +140,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean generatePassResetToken(UserDetails userDetails) {
 		boolean generatedToken = false;
+		cal = Calendar.getInstance();
 		PasswordResetToken resetToken = new PasswordResetToken();
 		PasswordResetToken passResetToken =passResetRepositoty.findByUserName(userDetails.getUserName());
 		if(null!=passResetToken){
-		passResetRepositoty.deleteByUserName(userDetails.getUserName());	
+		passResetRepositoty.deleteByToken(passResetToken.getToken());	
 		}
 		long t = cal.getTimeInMillis();
 		Date tokenExpiry = new Date(t + (10 * ONE_MINUTE_IN_MILLIS));
@@ -158,7 +160,7 @@ public class UserServiceImpl implements UserService {
 				+ ",<br><br>We've received a request to reset your account password.<br>"
 				+ " If you did not make this request, you can ignore this email and your password will remain unchanged.<br> <br>"
 				+ "To reset your password please follow the link below.\n(Link expires in 10 minutes)<br><br>"
-				+ "<a href='http://jemhs.com/resetPassword?id=" + userDetails.getUserName() + "&token=" + token
+				+ "<a href='http://jemhs.com/resetPassword?token=" + token
 				+ "'" + " style=text-decoration:none; >Reset Password </a></body></html><br><br>" + "Regards," + "<br>"
 				+ "Admin";
 		try {
@@ -172,33 +174,35 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String validateToken(String userName, String resetToken) {
-		usr = userName;
+	public String validateToken(String resetToken) {
 		PasswordResetToken passToken = null;
+		cal = Calendar.getInstance();
 		try {
-			passToken = passResetRepositoty.findByUserName(userName);
+			passToken = passResetRepositoty.findByToken(resetToken);
 		} catch (Exception e) {
 			logger.error("Error in finding username");
 		}
-		if (null == resetToken || null == passToken || !passToken.getUser_name().equals(userName)
-				|| !resetToken.equals(passToken.getToken())) {
+		if (null == resetToken || null == passToken||!resetToken.equals(passToken.getToken())) {
 			return "Invalid Token";
 		}
 		logger.info("Token time " + String.valueOf(passToken.getExpiryDate().getTime() - cal.getTime().getTime()));
 		if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
 
-			passResetRepositoty.delete(passToken.getId());
+			passResetRepositoty.deleteByToken(passToken.getToken());
 			return "Token has expired";
 		}
 		return "valid";
 	}
 
-	public boolean resetPassword(String pass) {
+	public boolean resetPassword(String token,String password) {
 		boolean reset = false;
-		String newPass = bCryptPasswordEncoder.encode(pass);
 		try {
-			PasswordResetToken passToken = passResetRepositoty.findByUserName(usr);
-			userRepository.changepassword(newPass, usr);
+			PasswordResetToken passToken = passResetRepositoty.findByToken(token);
+			if(null==passToken){
+				return false;
+			}
+			String newPass = bCryptPasswordEncoder.encode(password);
+			userRepository.changepassword(newPass, passToken.getUser_name());
 			reset = true;
 			passResetRepositoty.delete(passToken.getId());
 		} catch (Exception e) {
@@ -216,6 +220,21 @@ public class UserServiceImpl implements UserService {
 			logger.error("Error in finding the user for email " + email);
 		}
 		return details;
+	}
+
+	@Override
+	public boolean contactUs(String name, String email, String reason, String message) {
+		boolean mailSent= false;
+		toUser="kadiyala9999@gmail.com";
+		try{
+			body="<html><body> Name: "+name+"<br> Email:"+email+"<br> Reason:"+message;
+			emailService.sendSimpleMessage(toUser, reason, body);
+			mailSent=true;
+		}
+		catch(Exception e){
+			
+		}
+		return mailSent;
 	}
 
 }

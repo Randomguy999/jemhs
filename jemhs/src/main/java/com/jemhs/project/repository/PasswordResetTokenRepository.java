@@ -9,9 +9,11 @@ import com.jemhs.project.model.PasswordResetToken;
 @Transactional
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long>{
 
+	PasswordResetToken findByToken (String token);
+	
 	PasswordResetToken findByUserName (String userName);
 	
-	Long deleteByUserName(String userName);
+	Long deleteByToken(String token);
 	
 	/*@Query(nativeQuery = true,value="")
 	void deleteByExpiryDate();*/

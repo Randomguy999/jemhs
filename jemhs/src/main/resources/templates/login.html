@@ -3,36 +3,135 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Login Page</title>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Login Page</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script th:src="@{/js/app.js}"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.modal-footer {
+	border-top: 0px;
+}
+</style>
 </head>
 
 <body>
-	<!-- <form th:action="@{/registration}" method="get">
-		<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
-	</form>	 -->
-	
 	<div class="container">
-		<img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo" />
+		<img th:src="@{/images/login.jpg}" class="img-responsive center-block"
+			width="300" height="300" alt="Logo" />
 		<form th:action="@{/login}" method="POST" class="form-signin">
 			<h3 class="form-signin-heading" th:text="Welcome"></h3>
-			<br/>
-			 
-			<input type="text" id="userName" name="userName" required="required" th:placeholder="Username"
-				class="form-control" /> <br/> 
-			<input type="password"  th:placeholder="Password" required="required"
-				id="password" name="password" class="form-control" /> <br /> 
-			<div>	
-			<input type='checkbox' name="remember-me-param"/> Remember Me<br/><br> </div>
-			 <a href="forgotPassword">Forgot Password?</a><br><br>
-			<div align="center" th:if="${param.error}">
-				<p style="font-size: 20; color: #FF1C19;">Username or Password invalid, please verify</p>
+			
+			<div class="form-group input-group">
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-user"></span>
+						</span> <input name="userName" type="text" id="userName"
+							placeholder="Username" class="form-control" required /> <span
+							class="glyphicon" aria-hidden="true"></span>
+					</div>
+			
+			<div class="form-group input-group">
+						<span class="input-group-addon"> <span
+							class="glyphicon glyphicon-lock"></span>
+						</span> <input name="password" type="password" id="password"
+							placeholder="Password" class="form-control" required /> <span
+							class="glyphicon" aria-hidden="true"></span>
+					</div>
+			<div>
+				<input type='checkbox' name="remember-me-param" /> Remember Me<br />
 			</div>
-			<button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
-		</form>
+			
+			<br>
+			<div align="center" th:if="${param.error}">
+				<p style="font-size: 20; color: #FF1C19;">Username or Password
+					invalid, please verify</p>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" name="Submit"
+				value="Login" type="Submit" th:text="Login"></button>
+			<br> <br>
+			<div>&nbsp &nbsp
+			&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp
+			&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp
+			&nbsp &nbsp<a href="forgotPassword">Forgot Password?</a><br></div>
+<!-- 			<div class="container">
+				<a href="#" data-target="#pwdModal" data-toggle="modal">Forgot
+					Password?</a>
+			</div>
+ -->		</form>
 	</div>
+
+
+<!-- 	<!--modal-->
+	<form action="forgotPassword" id="passForgot" method="post">
+		<div id="pwdModal" class="modal fade" tabindex="-1" role="dialog"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">×</button>
+						<h1 class="text-center">LOGO</h1>
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="text-center">
+										<div th:if="${successMessage}"
+											class="alert alert-success alert-dismissible form-feedback"
+											role="alert">
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<div th:text=${successMessage}></div>
+										</div>
+										<div th:if="${errorMessage}"
+											class="alert alert-danger alert-dismissible form-feedback"
+											role="alert">
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<div th:text=${errorMessage}></div>
+										</div>
+										<div
+											style="font-size: 17px; line-height: 21px; margin-top: 5px; padding-bottom: 14px; color: #333333;"
+											align="center">
+											To reset your password, enter the email <br>address
+											associated with your account below.<br>
+										</div>
+										<div class="panel-body">
+											<fieldset>
+												<div class="form-group input-group has-feedback">
+													<span class="input-group-addon"> <span
+														class="glyphicon glyphicon-envelope "></span>
+													</span> <input type="email" placeholder="Email Address"
+														class="form-control" name="email" required /> <span
+														class="glyphicon form-control-feedback" aria-hidden="true"></span>
+
+												</div>
+												<input class="btn btn-lg btn-success btn-block"
+													value="Send Email" type="submit">
+											</fieldset>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="col-md-12">
+							<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form> 
 </body>
 </html>

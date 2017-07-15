@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <title>Home Page</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -74,7 +80,7 @@ footer {
           <span class="glyphicon glyphicon-home"></span></a>
 					<li><a href="#">About</a></li>
 					<!--  <li><a href="#">Projects</a></li> -->
-					<li><a href="#">Contact</a></li>
+					<li><a th:href="@{/contact}">Contact</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="active"><a href="/login"><span class="glyphicon glyphicon-log-in"
@@ -158,5 +164,19 @@ footer {
 		
 		</div>
 	</div>
+	<div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <div class="navbar-text pull-left">© 2017 - Site Built By Mr. Kadiyala.
+          <!--  <a href="http://tinyurl.com/tbvalid" target="_blank" >HTML 5 Validation</a> -->
+      </div>
+      <div class="navbar-text pull-right"><ul class="social-network social-circle">
+                        <li><a href="#" class="icoFacebook icon" title="Facebook"><i class="fa fa-facebook" ></i></a></li>
+                        <li><a href="#" class="icoTwitter icon" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#" class="icoGoogle icon" title="Google +"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#" class="icoLinkedin icon" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>	
+      </div>
+    </div>
+    </div>
 </body>
 </html>

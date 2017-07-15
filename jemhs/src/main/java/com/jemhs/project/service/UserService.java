@@ -16,11 +16,13 @@ public interface UserService {
 	
 	boolean generatePassResetToken(UserDetails userDetails);
 	
-	String validateToken(String userName,String resetToken);
+	String validateToken(String resetToken);
 	
-	boolean resetPassword(String pass);
+	boolean resetPassword(String token,String password);
 	
 	boolean changePassword(User user);
+	
+	boolean contactUs(String name, String email, String reason, String message);
 	
 	
 }

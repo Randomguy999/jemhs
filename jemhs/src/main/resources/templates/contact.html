@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description"
+	content="A contact form using the Bootstrap 3 framework.">
+<meta name="author" content="">
+<link rel="shortcut icon" href="../../assets/ico/favicon.png">
+<link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}" />
+<title>Contact Form</title>
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="/js/contact-form.js"></script>
+<script
+	src='https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAtuH-B_oblcodpxvumKFPfioo4tny_2n8'></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script type='text/javascript'
+					src='https://embedmaps.com/google-maps-authorization/script.js?id=2ffcbd0fb2def4a728b44323c8c4997beee26f45'></script>
+				<script type='text/javascript'>
+					function init_map() {
+						var myOptions = {
+							zoom : 12,
+							center : new google.maps.LatLng(16.2395313,
+									80.64933959999996),
+							mapTypeId : google.maps.MapTypeId.ROADMAP
+						};
+						map = new google.maps.Map(document
+								.getElementById('gmap_canvas'), myOptions);
+						marker = new google.maps.Marker({
+							map : map,
+							position : new google.maps.LatLng(16.2395313,
+									80.64933959999996)
+						});
+						infowindow = new google.maps.InfoWindow(
+								{
+									content : '<strong>JEMHS</strong><br><br> Tenali<br>'
+								});
+						google.maps.event.addListener(marker, 'click',
+								function() {
+									infowindow.open(map, marker);
+								});
+						infowindow.open(map, marker);
+					}
+					google.maps.event.addDomListener(window, 'load', init_map);
+				</script>
+
+<!-- EXTRACT ADDITIONAL STYLING HERE =======> -->
+<style>
+body {
+	background-color: #bfd9bf;
+}
+
+.form-group {
+	margin-bottom: 8px;
+}
+
+#feedbackForm {
+	font-size: 12px;
+}
+#gmap_canvas img {
+	max-width: none !important;
+	background: none !important
+}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">JEMHS</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#"> <span
+							class="glyphicon glyphicon-home"></span></a>
+					<li><a href="#">About</a></li>
+					<!--  <li><a href="#">Projects</a></li> -->
+					<li><a th:href="@{/contact}">Contact</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="/login"><span
+							class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div id="contact_form" class="row">
+			<div class="col-md-6">
+				<h4>Please fill the below contact form, we will get back to you.</h4>
+				<div th:if="${successMessage}"
+					class="alert alert-success alert-dismissible form-feedback"
+					role="alert">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<div th:text=${successMessage}></div>
+				</div>
+				<div th:if="${errorMessage}"
+					class="alert alert-danger alert-dismissible form-feedback"
+					role="alert">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<div th:text=${errorMessage}></div>
+				</div>
+				<form role="form" id="feedbackForm" method="post"
+					th:action="@{/contact}" data-toggle="validator"
+					data-disable="false">
+					<div class="form-group">
+						<label class="control-label" for="name">Name *</label>
+						<div class="input-group">
+						 <span class="input-group-addon"><i
+								class="glyphicon glyphicon-user"></i></span>
+							<input type="text" class="form-control" id="name" name="name"
+								placeholder="Enter your name" required />
+						</div>
+						<span class="help-block" style="display: none;">Please
+							enter your name.</span>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="email">Reason for
+							Contact *</label> <select name="reason" class="form-control" required>
+							<option value="General Inquiry">General Inquiry</option>
+							<option value="Report Issue">Report an Issue</option>
+							<option value="Other">Other</option>
+						</select> <span class="help-block" style="display: none;">Please
+							enter a valid e-mail address.</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="email">Email Address *</label>
+						<div class="input-group">
+						<span class="input-group-addon"><i
+								class="glyphicon glyphicon-envelope"></i></span>
+							<input type="email" class="form-control" id="email" name="email"
+								placeholder="Enter your email" required /> 
+						</div>
+						<span class="help-block" style="display: none;">Please
+							enter a valid e-mail address.</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="message">Message *</label>
+						<div class="input-group">
+						<span class="input-group-addon"><i
+								class="glyphicon glyphicon-pencil"></i></span>
+							<textarea rows="5" cols="30" class="form-control" id="message"
+								name="message" placeholder="Enter your message" required></textarea>
+						</div>
+						<span class="help-block" style="display: none;">Please
+							enter a message.</span>
+					</div>
+					<div class="form-group">
+						<div class="g-recaptcha"
+							data-sitekey="6Ld7nScUAAAAAHCgXXFEOEKygH7Jgviw_f5KC9aY"></div>
+						<span class="help-block" style="display: none;">Please
+							check that you are not a robot.</span>
+					</div>
+					<span class="help-block" style="display: none;">Please enter
+						a the security code.</span>
+					<button type="submit" id="feedbackSubmit"
+						class="btn btn-primary btn-lg" data-loading-text="Sending..."
+						style="display: block; margin-top: 10px;">Submit</button>
+				</form>
+				<br>
+				
+			</div>
+			<div class="col-md-6">
+				<div style='overflow: hidden; height: 500px; width: 520px;'>
+					<div id='gmap_canvas' style='height: 500px; width: 520px;'></div>
+				</div>
+				<a href='https://embedmaps.net'>#</a>
+			</div>
+			<!--/span-->
+		</div>
+		<!--/row-->
+	</div>
+	<!--/.container-->
+	<footer>
+	<div class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container">
+			<div class="navbar-text pull-left">
+				© 2017 - Site Built By Mr. Kadiyala.
+				<!--  <a href="http://tinyurl.com/tbvalid" target="_blank" >HTML 5 Validation</a> -->
+			</div>
+			<div class="navbar-text pull-right">
+				<ul class="social-network social-circle">
+					<li><a href="#" class="icoFacebook icon" title="Facebook"><i
+							class="fa fa-facebook"></i></a></li>
+					<li><a href="#" class="icoTwitter icon" title="Twitter"><i
+							class="fa fa-twitter"></i></a></li>
+					<li><a href="#" class="icoGoogle icon" title="Google +"><i
+							class="fa fa-google-plus"></i></a></li>
+					<li><a href="#" class="icoLinkedin icon" title="Linkedin"><i
+							class="fa fa-linkedin"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	</footer>
+</body>
+</html>
