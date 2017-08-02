@@ -13,14 +13,20 @@ import java.util.List;
  */
 
 
-public class DispatchVerificationDiagnosis extends Diagnosis {
+public class DispatchVerificationDiagnosis extends ProbeDiagnosis {
     
     private  List<ValidationInfo> verificationList;
-    
+
     public DispatchVerificationDiagnosis(List<ReadingGroup> readingGroups, List<Measurement> measurements, String summary, String probeId) {
+        super(readingGroups, measurements, summary, probeId);
+    }
+
+   
+    
+ /*   public DispatchVerificationDiagnosis(List<ReadingGroup> readingGroups, List<Measurement> measurements, String summary, String probeId) {
         super(readingGroups,measurements,summary,probeId);
         this.verificationList = new LinkedList<ValidationInfo>();
-    }
+    }  */
     
      public List<ValidationInfo> getVerificationList() {
          return verificationList;
